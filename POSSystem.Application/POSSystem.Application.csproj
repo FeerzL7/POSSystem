@@ -11,13 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
     <Folder Include="Common\" />
     <Folder Include="Queries\" />
     <Folder Include="Sagas\" />
     <Folder Include="Validators\" />
-    <Folder Include="UseCases\Inventario\" />
-    <Folder Include="UseCases\Caja\" />
   </ItemGroup>
 
   <ItemGroup>
