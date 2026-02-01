@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\POSSystem.Domain\POSSystem.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Common\" />
+    <Folder Include="Queries\" />
+    <Folder Include="Sagas\" />
+    <Folder Include="Validators\" />
+    <Folder Include="UseCases\Inventario\" />
+    <Folder Include="UseCases\Caja\" />
+    <Folder Include="UseCases\Ventas\" />
+  </ItemGroup>
+
+</Project>
