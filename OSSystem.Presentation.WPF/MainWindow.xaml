@@ -1,12 +1,79 @@
-﻿<Window x:Class="OSSystem.Presentation.WPF.MainWindow"
+﻿<Window x:Class="POSSystem.Presentation.WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:OSSystem.Presentation.WPF"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        xmlns:local="clr-namespace:POSSystem.Presentation.WPF.ViewModels"
+        xmlns:views="clr-namespace:POSSystem.Presentation.WPF.Views"
+        Title="Sistema POS - OXXO Style" 
+        Height="700" 
+        Width="1200"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Background="{StaticResource BackgroundColor}">
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Barra de navegación -->
+        <Border Grid.Row="0" 
+                Background="{StaticResource PrimaryColor}">
+            <Grid>
+                <StackPanel Orientation="Horizontal" 
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center">
+                    <Button Content="🛒 VENTAS" 
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Command="{Binding MostrarVentaCommand}"
+                            Width="180"
+                            Height="45"
+                            FontSize="16"
+                            Margin="5"/>
+                    <Button Content="💰 CAJA" 
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Command="{Binding MostrarCajaCommand}"
+                            Width="180"
+                            Height="45"
+                            FontSize="16"
+                            Margin="5"/>
+                    <Button Content="📦 INVENTARIO" 
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Command="{Binding MostrarInventarioCommand}"
+                            Width="180"
+                            Height="45"
+                            FontSize="16"
+                            Margin="5"/>
+                </StackPanel>
+
+                <!-- Título del sistema -->
+                <TextBlock Text="SISTEMA POS" 
+                          FontSize="20" 
+                          FontWeight="Bold"
+                          Foreground="White"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
+                          Margin="20,0"/>
+            </Grid>
+        </Border>
+
+        <!-- Contenido dinámico -->
+        <ContentControl Grid.Row="1" 
+                       Content="{Binding CurrentViewModel}">
+            <ContentControl.Resources>
+                <!-- DataTemplates para cada ViewModel -->
+                <DataTemplate DataType="{x:Type local:VentaViewModel}">
+                    <views:VentaView/>
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type local:CajaViewModel}">
+                    <views:CajaView/>
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type local:InventarioViewModel}">
+                    <views:InventarioView/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </Window>

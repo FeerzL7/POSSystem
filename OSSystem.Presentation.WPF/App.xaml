@@ -1,9 +1,16 @@
-﻿<Application x:Class="OSSystem.Presentation.WPF.App"
+﻿<Application x:Class="POSSystem.Presentation.WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:OSSystem.Presentation.WPF"
-             StartupUri="MainWindow.xaml">
+             xmlns:converters="clr-namespace:POSSystem.Presentation.WPF.Converters">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <converters:BoolToEstadoConverter x:Key="BoolToEstadoConverter"/>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

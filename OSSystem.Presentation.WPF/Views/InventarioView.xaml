@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="POSSystem.Presentation.WPF.Views.InventarioView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource BackgroundColor}">
+
+    <Grid Margin="20">
+        <Border Style="{StaticResource CardStyle}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="MÓDULO DE INVENTARIO" 
+                          Style="{StaticResource TitleStyle}"/>
+                <TextBlock Text="{Binding MensajeEstado}" 
+                          FontSize="18" 
+                          Margin="20"
+                          HorizontalAlignment="Center"/>
+                <TextBlock Text="(En construcción)" 
+                          FontSize="14" 
+                          Foreground="{StaticResource TextSecondaryColor}"
+                          HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
