@@ -20,7 +20,7 @@ namespace POSSystem.Presentation.WPF
 {
     public partial class App : System.Windows.Application
     {
-        private IHost? _host;
+        private IHost _host;
 
         public App()
         {
@@ -38,7 +38,6 @@ namespace POSSystem.Presentation.WPF
                 .ConfigureServices((context, services) =>
                 {
                     services.AddInfrastructure(context.Configuration);
-
                     services.AddScoped<CrearVentaUseCase>();
                     services.AddScoped<EscanearProductoUseCase>();
                     services.AddScoped<RegistrarPagoUseCase>();
@@ -50,14 +49,11 @@ namespace POSSystem.Presentation.WPF
                     services.AddScoped<RegistrarRetiroEfectivoUseCase>();
                     services.AddScoped<ConsultarStockUseCase>();
                     services.AddScoped<AjustarInventarioUseCase>();
-
                     services.AddScoped<GeneradorFolio>();
-
                     services.AddTransient<MainViewModel>();
                     services.AddTransient<VentaViewModel>();
                     services.AddTransient<CajaViewModel>();
                     services.AddTransient<InventarioViewModel>();
-
                     services.AddTransient<MainWindow>();
                 })
                 .ConfigureLogging(logging =>
@@ -71,17 +67,18 @@ namespace POSSystem.Presentation.WPF
 
         protected override async void OnStartup(StartupEventArgs e)
         {
-            if (_host != null)
+            try
             {
                 await _host.StartAsync();
-
-                // Inicializar base de datos
                 await InitializeDatabaseAsync();
-
                 var mainWindow = _host.Services.GetRequiredService<MainWindow>();
                 mainWindow.Show();
             }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al iniciar: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown();
+            }
             base.OnStartup(e);
         }
 
@@ -89,12 +86,9 @@ namespace POSSystem.Presentation.WPF
         {
             if (_host != null)
             {
-                using (_host)
-                {
-                    await _host.StopAsync(TimeSpan.FromSeconds(5));
-                }
+                await _host.StopAsync(TimeSpan.FromSeconds(5));
+                _host.Dispose();
             }
-
             base.OnExit(e);
         }
 
@@ -106,10 +100,13 @@ namespace POSSystem.Presentation.WPF
 
             try
             {
-                // Obtener DbContext y aplicar migraciones
                 var context = services.GetRequiredService<POSDbContext>();
-                await context.Database.MigrateAsync();
-                logger.LogInformation("Migraciones aplicadas exitosamente");
+
+                // USAR ENSURECREATED - NO MIGRACIONES
+                await context.Database.EnsureCreatedAsync();
+
+                logger.LogInformation("Base de datos creada en: {Path}",
+                    context.Database.GetDbConnection().DataSource);
 
                 // Cargar datos de prueba
                 var unitOfWork = services.GetRequiredService<IUnitOfWork>();
@@ -117,12 +114,9 @@ namespace POSSystem.Presentation.WPF
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error al inicializar la base de datos");
-                MessageBox.Show(
-                    $"Error al inicializar la base de datos:\n{ex.Message}",
-                    "Error",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                logger.LogError(ex, "Error en base de datos");
+                MessageBox.Show($"Advertencia: {ex.Message}\n\nLa aplicación continuará sin datos de prueba.",
+                    "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
     }
